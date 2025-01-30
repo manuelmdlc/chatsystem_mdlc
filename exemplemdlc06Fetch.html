@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+OBJET : exemplemdlc06 : Fetch
+-->
+
+<!-- Début script HTML -->
+<html>
+
+
+	<!-- Début entête script HTML -->
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+		<title>exemplemdlc06 Fetch</title>
+	
+		
+	</head>
+
+	<!-- Début section body du script HTML -->
+	<body>
+	
+
+		<!-- Titre du traitement -->
+		<h1 id="Fetch JSON et POST ">Fetch JSON et POST</h1>
+
+		<h2>JavaScript - exercice mdlc : utilisation de Fetch JSON et POST </h2>
+		<br />
+      		
+
+		<div class="form-group">
+		    <label for='ef_postidachercher' >age a saisir : </label>
+			<input type='number' ' id='ef_postidachercher' placeholder="Ex/ 1 a 20" min="1" max="20"/>
+	     </div>
+
+
+		 <input type='button'
+		 onclick="Chercherunpost(document.getElementById('ef_postidachercher') )" 
+		 value='saisir un ID a chercher' />
+     	 <br />
+
+		  <input type='button'
+		  onclick="Chargerles10post( )" 
+		  value='Charger les 10 premiers POSTS ' />
+		   <br />
+ 
+		 <!--
+		   <input type='button'
+		   onclick="req1 ()"
+		   value='Charger les POSTS REQ1' />
+          -->		   
+			<br />
+ 
+			<div id="container" class="news-content-container-flex">
+
+			</div>	
+		
+			<div id="news-2" class="news-content-container-flex">
+				<div class="news-title">
+					TITLE
+					<span id="printTitle">
+					</span>
+				</div>
+				<div class="news-content-1">
+					BODY
+					<span id="printBody">
+					</span>
+				</div>
+			</div>
+
+		<!-- Début script JavaScript -->
+		<script>
+
+
+		function Chercherunpost(idpostachercher) {
+
+			document.getElementById("printTitle").innerHTML = '';
+			document.getElementById("printBody").innerHTML = '';
+			document.getElementById('container').innerHTML = '';          
+
+			console.log("la ID saisie a chercher  " + parseInt(idpostachercher.value) );
+			
+			var a1 = parseInt(idpostachercher.value);
+			var retouridtrouvee = "LE POST RECHERCHEE EST NON TROUVEE";
+
+			document.getElementById("printTitle").innerHTML = "init title";
+			document.getElementById("printBody").innerHTML = "init body";
+
+			var larequete = 'https://jsonplaceholder.typicode.com/posts/' + a1
+			fetch(larequete)
+					.then(response => response.json())
+					.then(json => {
+					const title = json.title;
+					const body = json.body;
+					document.getElementById("printTitle").innerHTML = title;
+					document.getElementById("printBody").innerHTML = body;
+					});
+
+			return true;
+			
+		}
+
+
+		function Chargerles10post () {
+
+			document.getElementById("printTitle").innerHTML = '';
+			document.getElementById("printBody").innerHTML = '';
+			document.getElementById('container').innerHTML = '';          
+
+			fetch('https://jsonplaceholder.typicode.com/posts')
+    			.then((res) => { return res.json() })
+    			.then((data) => {
+        			let responseposts = '';
+					//for (let i = 0; i < data.length; i++) {
+						for (let i = 0; i < 10; i++) {
+						responseposts +=
+					`<ul>
+						<li>${data[i].title}</li>
+						<li>${data[i].body}</li>
+					</ul>`;
+		        }
+
+            document.getElementById('container').innerHTML = responseposts;          
+			return true;
+			})
+		}
+
+		function req1() {
+				fetch('https://jsonplaceholder.typicode.com/posts/1')
+					.then(response => response.json())
+					.then(json => {
+					const title = json.title;
+					const body = json.body;
+					document.getElementById("printTitle").innerHTML = title;
+					document.getElementById("printBody").innerHTML = body;
+					});
+
+					return true;
+		}
+
+		
+		</script>
+	</body>
+
+</html>
